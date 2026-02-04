@@ -1,13 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { CartItemType } from '../../types/producto.type';
 
+import { loadCartState } from '../localStorage';
+
 
 interface CartState {
     items: CartItemType[];
 }
 
 const initialState: CartState = {
-    items: [],
+    items: loadCartState() || [],
 };
 
 export const cartSlice = createSlice({
@@ -24,10 +26,12 @@ export const cartSlice = createSlice({
                 state.items.push(action.payload);
             }
         },
+
         // Quitar un producto completamente
         removeFromCart: (state, action: PayloadAction<number>) => {
             state.items = state.items.filter(item => item.id !== action.payload);
         },
+
         // Limpiar todo el carrito
         clearCart: (state) => {
             state.items = [];
