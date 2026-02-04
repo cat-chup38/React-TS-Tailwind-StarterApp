@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
 import type { ProductoType } from '../../types/producto.type';
 
 
 interface ItemProps {
     index: number;
     row: ProductoType;
+    onActionClick: (producto: ProductoType) => void;
 }
 
-export const Item: React.FC<ItemProps> = ({ index, row }) => {
+export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
 
     return (
         <tr className="hover:bg-gray-50 transition-colors">
@@ -36,7 +36,7 @@ export const Item: React.FC<ItemProps> = ({ index, row }) => {
             </td>
             <td className="px-4 py-3">
                 <button
-                    // onClick={hanbleClicAddTo}
+                    onClick={() => onActionClick(row)}
                     disabled={!row.isActive}
                     className={`
                         flex items-center gap-2 px-6 py-2 rounded-full font-semibold transition-all duration-300

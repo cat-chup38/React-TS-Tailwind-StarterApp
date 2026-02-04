@@ -1,23 +1,18 @@
+// Hooks
 import { useFetchProducts } from '../../hooks/useFetchProducts';
-
 import { useAppDispatch } from '../../hooks/storeHooks';
 
 import { addToCart } from '../../store/slices/cart.slice';
 
 import type { ProductoType, CartItemType } from '../../types/producto.type';
 
-// Components
 import { Grid } from './Grid';
 
 
 export const Catalogo = () => {
-    // 1. Obtenemos los productos, el estado de carga y el error del hook
-    const { products, loading, error } = useFetchProducts();
-
-    // 2. Preparamos el despachador de acciones de Redux
+    const { products, loading, error } = useFetchProducts(); // Obtenemos los productos, el estado de carga y el error del hook
     const dispatch = useAppDispatch();
 
-    // 3. Función que transforma un ProductoType en un CartItemType
     const handleAddToCart = (producto: ProductoType) => {
         const newItem: CartItemType = {
             ...producto,
@@ -25,7 +20,7 @@ export const Catalogo = () => {
         };
 
         dispatch(addToCart(newItem));
-        alert(`${producto.title} añadido al carrito`);
+        console.log(`${producto.title} añadido al carrito`)
     };
 
     if (loading) {
@@ -41,7 +36,6 @@ export const Catalogo = () => {
         );
     }
 
-    // 4. Pasamos los productos y la función de acción al Grid
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-6">Catálogo de Productos</h1>
