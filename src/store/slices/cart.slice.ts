@@ -1,5 +1,5 @@
 import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit';
-import type { CartItemType } from '../../types/producto.type';
+import type { CartItemType, ProductoType } from '../../types/producto.type';
 import { loadCartState } from '../localStorage';
 
 
@@ -45,11 +45,21 @@ export const cartSlice = createSlice({
         // Limpiar todo el carrito
         clearCart: (state) => {
             state.items = [];
-        }
-    }
+        },
+
+        syncIsActive: (state, action: PayloadAction<CartItemType[] | ProductoType[]>) => {
+            state.items.forEach(item => {
+                const catalogProduct = action.payload.find(p => p.id === item.id);
+                if (catalogProduct) {
+                    // Forzamos la actualización con el valor real del catálogo
+                    item.isActive = catalogProduct.isActive;
+                }
+            });
+        },
+    },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart, syncIsActive } = cartSlice.actions;
 
 
 // --- SELECTORES (Tipados sin importar la Store) ---
