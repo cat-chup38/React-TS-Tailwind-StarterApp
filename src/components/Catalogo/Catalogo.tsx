@@ -1,8 +1,8 @@
 // Hooks
 import { useFetchProducts } from '../../hooks/useFetchProducts';
-import { useAppDispatch } from '../../hooks/storeHooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/storeHooks';
 
-import { addToCart } from '../../store/slices/cart.slice';
+import { addToCart, removeFromCart } from '../../store/slices/cart.slice';
 
 import type { ProductoType, CartItemType } from '../../types/producto.type';
 
@@ -13,15 +13,32 @@ export const Catalogo = () => {
     const { products, loading, error } = useFetchProducts(); // Obtenemos los productos, el estado de carga y el error del hook
     const dispatch = useAppDispatch();
 
+    const cartIds = useAppSelector((state) =>
+        state.cart.items.map((item: CartItemType) => item.id)
+    );
+
     const handleAddToCart = (producto: ProductoType) => {
+        const isAdded = cartIds.includes(producto.id);
+
+        if (isAdded)
+            removeProduct(producto);
+        else
+            addProduct(producto);
+    };
+
+    const addProduct = (producto: ProductoType) => {
         const newItem: CartItemType = {
             ...producto,
             cantidadPedido: 1 // Inicializamos la cantidad al agregar por primera vez
         };
 
         dispatch(addToCart(newItem));
-        console.log(`${producto.title} añadido al carrito`)
     };
+
+    const removeProduct = (producto: ProductoType) => {
+        dispatch(removeFromCart(producto.id));
+    };
+
 
     if (loading) {
         return <div className="p-10 text-center font-bold">Cargando productos...</div>;
@@ -39,7 +56,7 @@ export const Catalogo = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-6">Catálogo de Productos</h1>
-            <Grid rowItems={products} onActionClick={handleAddToCart} />
+            <Grid rowItems={products} cartIds={cartIds} onActionClick={handleAddToCart} />
         </div>
     );
 };

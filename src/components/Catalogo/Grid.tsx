@@ -1,13 +1,14 @@
-import type { ProductoType } from '../../types/producto.type';
+import type { CartItemType, ProductoType } from '../../types/producto.type';
 import { Item } from './Item';
 
 
 interface TableProps {
     rowItems: ProductoType[];
+    cartIds: Number[];
     onActionClick: (producto: ProductoType) => void;
 }
 
-export const Grid: React.FC<TableProps> = ({ rowItems, onActionClick }) => {
+export const Grid: React.FC<TableProps> = ({ rowItems, cartIds, onActionClick }) => {
     return (
         <div className="py-10 overflow-x-auto max-w-4xl mx-auto">
             <table className="min-w-full border border-gray-200 bg-white text-sm rounded-lg overflow-hidden">
@@ -24,7 +25,12 @@ export const Grid: React.FC<TableProps> = ({ rowItems, onActionClick }) => {
                 <tbody className="divide-y divide-gray-200">
                     {
                         rowItems.map((row, index) => (
-                            <Item index={index} row={row} key={index} onActionClick={onActionClick}></Item>
+                            <Item
+                                index={index}
+                                key={index}
+                                row={row}
+                                isAdded={cartIds.includes(row.id)}
+                                onActionClick={onActionClick} />
                         ))
                     }
                 </tbody>

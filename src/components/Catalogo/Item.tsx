@@ -4,10 +4,11 @@ import type { ProductoType } from '../../types/producto.type';
 interface ItemProps {
     index: number;
     row: ProductoType;
+    isAdded: Boolean;
     onActionClick: (producto: ProductoType) => void;
 }
 
-export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
+export const Item: React.FC<ItemProps> = ({ index, row, isAdded, onActionClick }) => {
 
     return (
         <tr className="hover:bg-gray-50 transition-colors">
@@ -40,14 +41,14 @@ export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
                     disabled={!row.isActive}
                     className={`
                         flex items-center gap-2 px-6 py-2 rounded-full font-semibold transition-all duration-300
-                        ${ true //added
+                        ${ isAdded
                             ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 scale-105'
                             : 'bg-white text-slate-600 border-2 border-slate-200'
                         }
                         ${row.isActive ? 'hover:border-indigo-400' : 'opacity-50 cursor-not-allowed'}
                     `}
                 >
-                    { true // added
+                    { isAdded
                         ? 'Agregado' : 'Agregar'}
                 </button>
             </td>
