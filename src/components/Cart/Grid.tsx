@@ -26,7 +26,11 @@ export const Grid: React.FC<TableProps> = ({ rowItems, onActionClick }) => {
                 <tbody className="divide-y divide-gray-200">
                     {
                         rowItems.map((row, index) => (
-                            <Item index={index} row={row} key={index} onActionClick={onActionClick}></Item>
+                            <Item
+                                index={index}
+                                key={index}
+                                row={row}
+                                onActionClick={onActionClick} />
                         ))
                     }
                 </tbody>

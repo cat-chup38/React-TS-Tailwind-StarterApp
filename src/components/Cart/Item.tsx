@@ -1,5 +1,7 @@
 import type { CartItemType } from '../../types/producto.type';
 
+import { useAppDispatch } from '../../hooks/storeHooks';
+import { updateQuantity } from '../../store/slices/cart.slice';
 
 interface ItemProps {
     index: number;
@@ -8,6 +10,7 @@ interface ItemProps {
 }
 
 export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
+    const dispatch = useAppDispatch();
 
     return (
         <tr className="hover:bg-gray-50 transition-colors">
@@ -38,7 +41,7 @@ export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
                 <div className="flex items-center gap-2">
                     <button
                         className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors disabled:bg-gray-300"
-                        // onClick={() => updateQuantity(row.id, -1)}
+                        onClick={() => dispatch(updateQuantity({ id: row.id, delta: -1 }))}
                         disabled={row.cantidadPedido <= 0}
                     >
                         -
@@ -54,7 +57,7 @@ export const Item: React.FC<ItemProps> = ({ index, row, onActionClick }) => {
 
                     <button
                         className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                        // onClick={() => updateQuantity(row.id, 1)}
+                        onClick={() => dispatch(updateQuantity({ id: row.id, delta: 1 }))}
                     >
                         +
                     </button>
