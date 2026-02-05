@@ -3,6 +3,7 @@ import { useFetchProducts } from '../../hooks/useFetchProducts';
 import { useAppSelector, useAppDispatch } from '../../hooks/storeHooks';
 
 import { addToCart, removeFromCart } from '../../store/slices/cart.slice';
+import { selectCartIds } from '../../store/slices/cart.slice';
 
 import type { ProductoType, CartItemType } from '../../types/producto.type';
 
@@ -12,10 +13,7 @@ import { Grid } from './Grid';
 export const Catalogo = () => {
     const { products, loading, error } = useFetchProducts(); // Obtenemos los productos, el estado de carga y el error del hook
     const dispatch = useAppDispatch();
-
-    const cartIds = useAppSelector((state) =>
-        state.cart.items.map((item: CartItemType) => item.id)
-    );
+    const cartIds = useAppSelector(selectCartIds);
 
     const handleAddToCart = (producto: ProductoType) => {
         const isAdded = cartIds.includes(producto.id);

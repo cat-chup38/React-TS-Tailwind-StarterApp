@@ -1,6 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit';
 import type { CartItemType } from '../../types/producto.type';
-
 import { loadCartState } from '../localStorage';
 
 
@@ -51,4 +50,17 @@ export const cartSlice = createSlice({
 });
 
 export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions;
+
+
+// --- SELECTORES (Tipados sin importar la Store) ---
+
+// Definimos qué parte del estado global necesita este selector
+// sin necesidad de importar el RootState completo.
+const selectCartItems = (state: { cart: CartState }) => state.cart.items;
+
+export const selectCartIds = createSelector(
+    [selectCartItems],
+    (items) => items.map(item => item.id)
+);
+
 export default cartSlice.reducer;
